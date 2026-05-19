@@ -1,0 +1,22 @@
+# --- Python & Environment ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# --- Data & Datenbanken ---
+data/*.db
+# Falls du später CSVs exportierst, die nicht ins Repo sollen:
+data/*.csv
+
+# --- IDEs & Tools ---
+.idea/
+.vscode/
+*.swp
+
+# --- Dokumentation & Persönliches ---
+TODO
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints/

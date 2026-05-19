@@ -1,0 +1,54 @@
+@startuml
+skinparam style strictuml
+
+actor "Entwickler" as User
+participant "Python Script\n(generate_mock_data.py)" as Script
+database "SQLite DB\n(fitness_mock.db)" as DB
+
+User -> Script: Startet Skript
+activate Script
+
+Script -> DB: Verbindung herstellen / prüfen
+Script -> Script: Tabellen anlegen (IF NOT EXISTS)
+
+Script -> DB: INSERT Test-Benutzer
+DB --> Script: aktuelle_nutzer_id
+
+loop num_entries
+    Script -> Script: Generiere Trainings-Typ & Datum
+
+    alt Krafttraining
+        Script -> Script: **Berechne** biologische Progression\n(Trend, Plateaus & Tagesform-Rauschen)
+        Script -> Script: **Generiere** Übungsgewichte\n(Inkl. Grenzfall: 0 Wiederholungen)
+        Script -> Script: **Berechne** Gesamtvolumen & Wertung
+
+        Script -> DB: INSERT Training
+        DB --> Script: t_id
+
+        loop Übungen
+            Script -> DB: INSERT Übung
+        end
+    else Dauerlauf
+        Script -> Script: **Generiere** Distanz (Inkl. Edge-Case: Tippfehler-Ausreißer)
+        Script -> Script: **Generiere** Herzfrequenz (Inkl. Grenzfall: Ausfall / NULL-Wert)
+        Script -> Script: **Berechne** Wertung
+        Script -> DB: INSERT Training
+        DB --> Script: t_id
+        Script -> DB: INSERT Dauerlauf-Details
+    else Sprint
+        Script -> Script: **Generiere** Sprints & Max. Geschwindigkeit (Zufall + Trend)
+        Script -> Script: **Berechne** Wertung
+        Script -> DB: INSERT Training
+        DB --> Script: t_id
+        Script -> DB: INSERT Sprint-Details
+    end
+end
+
+Script -> DB: commit()
+alt Wenn keine aktive Test-Verbindung
+    Script -> DB: close()
+end
+Script --> User: "Daten erfolgreich generiert"
+deactivate Script
+
+@enduml
