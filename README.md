@@ -62,24 +62,22 @@ Die Verbindung beider Teile über eine API ist geplant. Der Analyzer arbeitet zu
 ```
 fitness-data-analyzer/
 ├── data/
-│   └── fitness_mock.db          # Generierte SQLite-Datenbank
+│   └── fitness_mock.db           # Generierte SQLite-Datenbank
 ├── docs/
-│   ├── generate_mock_data.puml  # Sequenzdiagramm Datengenerierung
-│   ├── pipeline.puml             # Aktivitätsdiagramm Analyse-Pipeline
+│   ├── generate_mock_data.puml   # Sequenzdiagramm Datengenerierung
+│   ├── analysis_pipeline.puml    # Aktivitätsdiagramm Analyse-Pipeline
 │   └── *.svg                     # Gerenderte Diagramme
 ├── notebooks/
 │   └── analysis.ipynb            # Jupyter Notebook mit vollständiger EDA
 ├── scripts/
-│   ├── __init__.py
-│   ├── generate_mock_data.py     # Testdatengenerator
-│   └── data_provider.py          # Platzhalter für zukünftige API
+│   ├── data_provider.py          # Platzhalter für zukünftige API
+│   └── generate_mock_data.py     # Testdatengenerator
 ├── tests/
-│   ├── __init__.py
-│   ├── test_generator.py         # Testet Datengenerierung
+│   ├── test_data_integrity.py    # Testet mathematische Zusammenhänge
 │   ├── test_db_connection.py     # Testet DB-Zugriff
-│   └── test_data_integrity.py    # Testet mathematische Zusammenhänge
-├── requirements.txt
-└── README.md
+│   └── test_generator.py         # Testet Datengenerierung
+├── README.md
+└── requirements.txt
 ```
 
 ---
