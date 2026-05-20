@@ -1,0 +1,49 @@
+@startuml
+skinparam style strictuml
+
+start
+
+:Jupyter Notebook öffnen\n(analysis.ipynb);
+
+partition "1. Datenextraktion" {
+  :SQLite-Verbindung herstellen;
+  :Tabelle 'trainings' laden;
+  :Datetime-Konvertierung;
+}
+
+partition "2. Explorative Analyse" {
+  :Scatterplot: Wertung über Zeit\n(gruppiert nach Trainingstyp);
+
+  fork
+    :Boxplot Krafttraining\n(Kniebeugen-Volumen);
+  fork again
+    :Boxplot Dauerlauf\n(Distanzen);
+  end fork
+}
+
+partition "3. Datenbereinigung" {
+  :Berechne μ und σ für Kniebeugen-Volumen;
+
+  :Filtere Ausreißer:\nμ - 2σ ≤ Volumen ≤ μ + 2σ;
+
+  :Berechne Rolling Average\n(Fenster = 5 Einträge);
+}
+
+partition "4. Trendvisualisierung" {
+  :Scatterplot: Bereinigte Rohdaten;
+  :Lineplot: Progressionstrend;
+}
+
+partition "5. Korrelationsanalyse" {
+  :Filtere Trainings:\nWertung > 0, Dauer < 120 min;
+
+  :Berechne Korrelationsmatrix\n(Dauer vs. Wertung);
+
+  :Heatmap-Visualisierung;
+}
+
+:Analyse abgeschlossen;
+
+stop
+
+@enduml

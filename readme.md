@@ -1,123 +1,223 @@
 # Fitness-Data-Analyzer
 
-Ein Python-basiertes Analyse- und Visualisierungstool für sportliche Leistungen. Das Tool dient der Auswertung generierter Trainingsdaten und zeigt exemplarisch explorative Datenanalyse (EDA), statistische Bereinigung von Ausreißern und die Erkennung langfristiger Leistungstrends.
+Ein Python-basiertes Analyse- und Visualisierungstool für Trainingsdaten. Das Projekt demonstriert exemplarisch explorative Datenanalyse (EDA), statistische Ausreißerbereinigung und Trendvisualisierung an simulierten Fitness-Metriken.
+
+## Projektkontext
+
+Dieses Tool ist Teil eines zweiteiligen Portfolios:
+- **Fitness-Tracker (CLI)**: Erfasst Trainingseinheiten via Kommandozeile und speichert sie in SQLite
+- **Fitness-Data-Analyzer** (dieses Repository): Analysiert und visualisiert die Trainingsdaten
+
+Die Verbindung beider Teile über eine API ist geplant. Der Analyzer arbeitet zu Test- und Präsentationszwecken mit synthetischen Daten, die eine realistische Leistungsprogression simulieren.
+
+---
 
 ## Key Features
 
-* **Zufällige Testdaten-Generierung:** Simulation von Trainingsfortschritten mittels kombinierter linearer und zyklischer Algorithmen inklusive bewusst erstellte Extremwerte.
-* **Explorative Anomalie-Erkennung:** Visuelle Identifikation von Ausreißern mittels Boxplots.
-* **Statistische Datenbereinigung:** Automatisiertes Aussortieren von Ausreißern über die zweifache Standardabweichung ($\mu \pm 2\sigma$).
-* **Geglättete Trendanalyse:** Berechnung und Darstellung der Leistungsprogression mit Hilfe von Rolling Averages.
-* **Zusammenhangsanalyse (Feature-Korrelation):** Untersuchung von Wechselwirkungen zwischen Leistungsmetriken (z. B. Trainingsdauer vs. Score-Wertung) mittels Heatmaps.
-* **[In Planung] Web-Schnittstelle (REST-API):** Empfang von realen Daten der CLI-App zur automatisierten Verarbeitung innerhalb der Analyse-Pipeline.
+* **Synthetische Testdatengenerierung**: Simulation natürlicher Trainingsfortschritte durch kombinierte lineare Trends, periodische Plateaus (Sinusfunktion) und stochastisches Rauschen
+* **Gezielte Anomalie-Injektion**: Bewusst platzierte Extremwerte (fehlerhafte Eingaben, Null-Werte) zur Demonstration robuster Datenverarbeitung
+* **Explorative Visualisierung**: Identifikation von Ausreißern mittels Boxplots vor der statistischen Bereinigung
+* **Statistische Datenbereinigung**: Filterung von Ausreißern über die zweifache Standardabweichung
+* **Trendanalyse**: Glättung der Leistungsprogression durch Rolling Averages zur Darstellung langfristiger Entwicklungen
+* **Korrelationsanalyse**: Untersuchung von Zusammenhängen zwischen Trainingsmetriken (Dauer vs. Wertung) mittels Heatmaps
+
+---
 
 ## Tech Stack
 
-* **Sprache:** Python 3.x
-* **Datenverarbeitung:** `pandas`
-* **Visualisierung:** `matplotlib`, `seaborn`
-* **Datenbank:** SQLite3
-* **Testing:** `pytest`, `unittest`
-* **[In Planung] Zusätzliche Bibliotheken:** `FastAPI` (Schnittstellen-Framework) und `Pydantic` (Datenvalidierung)
+* **Sprache**: Python 3.x
+* **Datenverarbeitung**: `pandas`
+* **Visualisierung**: `matplotlib`, `seaborn`
+* **Datenbank**: SQLite3
+* **Testing**: `pytest`, `unittest`
 
 ---
 
 ## Schnellstart
 
-Um das Analyse-Tool auszuführen und die Visualisierungen zu betrachten, gehen Sie wie folgt vor:
+**Voraussetzungen:** Python 3.x, `pip`, `jupyter`
 
-1. **Abhängigkeiten installieren:**
-   ```bash
+1. **Repo klonen und Abhängigkeiten installieren:**
+```bash
+   git clone https://github.com/39761/fitness-data-analyzer
+   cd fitness-data-analyzer
    pip install -r requirements.txt
-   ```
-2. **Datenbasis generieren:**
-   ```bash
+```
+
+2. **Testdaten generieren:**
+```bash
    python scripts/generate_mock_data.py
-   ```
-   *Erstellt die SQLite-Datenbank `data/fitness_mock.db` mit 100 realistischen, synthetischen Trainingseinheiten.*
+```
+   *Erstellt `data/fitness_mock.db` mit 100 synthetischen Trainingseinheiten*
+
 3. **Analyse-Notebook starten:**
-   ```bash
+```bash
    jupyter notebook notebooks/analysis.ipynb
-   ```
-   *Führt Schritt für Schritt durch die explorative Datenanalyse, Bereinigung und Visualisierung.*
+```
 
 ---
 
 ## Projektstruktur
 
-* `data/`: Verzeichnis für die SQLite-Datenbank (`fitness_mock.db`).
-* `docs/`: Technische Dokumentation der Analyse-Struktur (PlantUML-Quellen und Diagramme).
-* `notebooks/`: Jupyter Notebook (`analysis.ipynb`) mit der vollständigen ETL- und Visualisierungs-Pipeline.
-* `scripts/`: Ausführbare Python-Skripte zur Datenbereitstellung und -generierung.
-  * `generate_mock_data.py`: Logik zur Erzeugung mathematisch modellierter Trainingsdaten.
-  * `data_provider.py`: Schnittstelle für zukünftige API-Datenzugriffe.
-* `tests/`: Testsuite zur Überprüfung der Datenintegrität und der Testdatengenerierung.
-* `requirements.txt`: Liste der benötigten wissenschaftlichen Bibliotheken für die Datenanalyse.
+```
+fitness-data-analyzer/
+├── data/
+│   └── fitness_mock.db          # Generierte SQLite-Datenbank
+├── docs/
+│   ├── generate_mock_data.puml  # Sequenzdiagramm Datengenerierung
+│   ├── pipeline.puml             # Aktivitätsdiagramm Analyse-Pipeline
+│   └── *.svg                     # Gerenderte Diagramme
+├── notebooks/
+│   └── analysis.ipynb            # Jupyter Notebook mit vollständiger EDA
+├── scripts/
+│   ├── __init__.py
+│   ├── generate_mock_data.py     # Testdatengenerator
+│   └── data_provider.py          # Platzhalter für zukünftige API
+├── tests/
+│   ├── __init__.py
+│   ├── test_generator.py         # Testet Datengenerierung
+│   ├── test_db_connection.py     # Testet DB-Zugriff
+│   └── test_data_integrity.py    # Testet mathematische Zusammenhänge
+├── requirements.txt
+└── README.md
+```
 
 ---
 
-## Design-Entscheidungen (Highlights)
+## Design-Entscheidungen
 
-### Mathematische Trend-Simulation
-Fortschritte im Krafttraining werden über ein mathematisches Modell simuliert, das einen linearen Grundtrend mit einer periodischen Sinuskurve kreuzt. Dadurch werden natürliche Plateaus und plötzliche Leistungsschübe realitätsnah abgebildet, während ein normalverteiltes Rauschen die Tagesform simuliert.
+### Mathematische Progressions-Simulation
 
-### Datenbereinigung und Filter-Logik
-Das Tool demonstriert zwei unterschiedliche Ansätze im Umgang mit Anomalien:
-1. **Statistische Bereinigung (Progression):** Bei der detaillierten Betrachtung der Kniebeugen werden fehlerhafte Datensätze (0-kg-Einträge) über das mathematische Kriterium der zweifachen Standardabweichung ($\mu \pm 2\sigma$) automatisiert isoliert und eliminiert, um den gleitenden Durchschnitt nicht zu verzerren.
-2. **Heuristische Filterung (Zusammenhangsanalyse):** Vor der Erstellung der Heatmap werden über feste Schwellenwerte unvollständige Trainingseinheiten (Wertung = 0) sowie extreme Zeit-Ausreißer manuell begrenzt, um die Korrelationsmatrix auf die primären Leistungskorridore zu fokussieren.
+Die Testdaten bilden eine realistische Leistungsentwicklung ab, z. B. für Krafttrainings:
+
+```python
+progression = linear_trend + wave_pattern + noise
+             = (day × 0.25) + sin(day/12) × 2.5 + rand(-5%, +5%)
+```
+
+**Komponenten:**
+- **Linearer Trend**: Grundlegende Kraftzunahme über Zeit
+- **Sinuswelle**: Periodische Plateaus und Leistungsschübe (ca. 40-Tage-Zyklen)
+- **Stochastisches Rauschen**: Tagesform-Schwankungen von ±5%
+
+**Anomalien** (gezielt eingebaut):
+- Alle 30 Einträge: Krafttraining mit 0 Wiederholungen (Eingabefehler)
+- Alle 25 Einträge: Dauerlauf mit 45 km statt ~5 km (Tippfehler)
+- Alle 20 Einträge: Fehlende Herzfrequenz (`NULL`)
+
+### Zwei Bereinigungsansätze
+
+Das Tool demonstriert unterschiedliche Strategien im Umgang mit Ausreißern:
+
+#### 1. Statistische Filterung (Progressionsanalyse)
+Für die Trendanalyse der Kniebeugen-Progression:
+- **Methode**: $\mu \pm 2\sigma$-Kriterium (zweifache Standardabweichung)
+- **Begründung**: Mathematisch fundiertes Verfahren, das 95% der validen Werte behält
+- **Anwendung**: Entfernt 0-kg-Einträge automatisch vor Berechnung des Rolling Average
+
+#### 2. Heuristische Schwellenwerte (Korrelationsanalyse)
+Für die Heatmap (Dauer vs. Wertung):
+- **Methode**: Feste Grenzwerte (`wertung > 0`, `dauer_min < 120`)
+- **Begründung**: Fokussiert die Korrelationsmatrix auf den relevanten Leistungskorridor
+- **Anwendung**: Schließt unvollständige Trainings und Zeitausreißer manuell aus
 
 ---
 
 ## Architektur & Dokumentation
 
-Das Tool ist als eigenständige Pipeline konzipiert, die synthetische Trainingsdaten generiert, diese über relationale Strukturen persistiert und anschließend für statistische Auswertungen transformiert. Die aktuellen Abläufe sind in den folgenden Diagrammen dokumentiert:
+### Datengenerierungs-Prozess (Sequenzdiagramm)
 
-### Interner Daten-Generierungsprozess (Sequenzdiagramm)
-Das Sequenzdiagramm zeigt den Ablauf des Skripts `generate_mock_data.py`. Es stellt die Berechnung zur Simulation einer natürlichlich Progression dar, welche auch gezielt ausreißer einbaut. Ebenso dass es die relationalen SQL-Tabellen unter Einhaltung der Fremdschlüssel-Hierarchien befüllt.
+Das bestehende Sequenzdiagramm `generate_mock_data.puml` visualisiert den Ablauf des Generators. Es zeigt:
+- Tabellenerstellung mit Foreign-Key-Constraints
+- Schleife über alle Trainingstypen
+- Berechnung der biologischen Progression
+- Gezielte Injection von Anomalien
+- Transaktionales Commit der Daten
 
 ![Sequenzdiagramm Datengenerierung](./docs/generate_mock_data.svg)
 
-### Lokale Analyse-Pipeline (Aktivitätsdiagramm)
-Dieses Diagramm visualisiert den sequenziellen ETL-Prozess (Extract, Transform, Load) innerhalb des Jupyter Notebooks (`analysis.ipynb`). Es zeigt den Weg der Rohdaten aus der lokalen SQLite-Datenbank, Ermittlung von Ausreißern, Darstellung statistischen Korrelation und Visualisierung.
+### Analyse-Pipeline (Aktivitätsdiagramm)
 
-![Aktivitätsdiagramm Daten-Pipeline](./docs/pipeline.svg)
+![Aktivitätsdiagramm](./docs/analyse_pipeline.svg)
 
-### Konzeptionelle Gesamtarchitektur (Zielbild)
-Die langfristige Systemarchitektur sieht eine datentechnische Brücke zwischen dem **Fitness-Tracker CLI** und diesem **Fitness-Data-Analyzer** vor. In diesem Zielbild werden die lokalen Datei-Zugriffe auf die `.db`-Dateien durch den geplanten FastAPI-Layer ersetzt. Der Analyzer fungiert dann als zentrale Datensenke-Dienst, der Workouts über standardisierte Web-Schnittstellen empfängt und plattformunabhängig auswertet.
+Dieses Diagramm zeigt den sequenziellen ETL-Prozess im Notebook: Extraktion aus SQLite, explorative Visualisierung, statistische Bereinigung und finale Korrelationsanalyse.
 
-![Gesamtarchitektur Zielbild](./docs/architecture_target.svg)
+### Konzeptionelle Zielarchitektur
+
+**Langfristige Vision**: Überbrückung zwischen CLI-Tracker und Analyzer via REST-API
+
+**Aktuell**:
+```
+[CLI-Tracker] → fitness_tracker.db (lokal)
+[Analyzer]    → fitness_mock.db (synthetisch, lokal)
+```
+
+**Ziel** (noch nicht implementiert):
+```
+[CLI-Tracker]
+      ↓
+fitness_tracker.db (lokal)
+      ↓
+POST /api/trainings
+      ↓
+[FastAPI Layer]
+      ↓
+[Zentrale DB]
+      ↓
+[Analyzer Pipeline]
+```
 
 ---
 
 ## Testing
-
-Die Testsuite im Ordner `tests/` stellt die Validität der Datenbasis und Berechnungslogiken sicher:
-
-* `test_generator.py`: Überprüfung der Tabellenerstellung, der Progressionsbrechnungen und Stabilität der Datengenerierung.
-* `test_db_connection.py`: Integrationstest zur Verifizierung erfolgreicher Lese- und Schreibzugriffe auf die SQLite-Schnittstelle.
-* `test_data_integrity.py`: Prüft die Korrektheit von mathematischen Zusammenhängen innerhalb der generierten Tabellen.
 
 **Tests ausführen:**
 ```bash
 python -m pytest tests/ -v
 ```
 
+**Test-Abdeckung:**
+
+| Datei | Zweck | Kernprüfungen |
+|-------|-------|---------------|
+| `test_generator.py` | Datengenerierung | Tabellenerstellung, Progressionsformel, Zeilen-Insertion |
+| `test_db_connection.py` | DB-Integration | SQLite-Lese/Schreibzugriffe, Pandas-Kompatibilität |
+| `test_data_integrity.py` | Datenqualität | Wertungs-Formel (Volumen/20), FK-Konsistenz |
+
+**Besonderheit**: `test_generator.py` nutzt In-Memory-DB (`:memory:`) für schnelle, isolierte Tests ohne Dateisystem-Abhängigkeiten.
+
 ---
 
-## Ausblick und API-Konzept (Future Work)
+## Bekannte Einschränkungen
 
-Um das Analyse-Tool nicht nur auf zufällig generierte Testdaten sowie manuell eingefügte Datenbank-Dateien anwenden zu können, ist die Implementierung einer Webschnittstelle (REST-API) auf Basis von FastAPI geplant.
+- **Keine echten Daten**: Alle Analysen basieren auf synthetischen Mustern
+- **SQLite-Limitierungen**: Keine gleichzeitigen Schreibzugriffe (Notebook blockiert Generator)
+- **Fehlende API**: `data_provider.py` ist ein leerer Platzhalter
+- **Hartcodierte Werte**: Progressionsparameter (0.25, 2.5, 12) sind nicht konfigurierbar
 
-### Geplante Architektur-Erweiterung
+---
 
-1. **API-Schnittstelle:** Das Analyse-Tool stellt Endpunkte bereit, um Trainingsdaten direkt aus externen Quellen (wie der CLI-App) entgegenzunehmen, anstatt direkt auf deren lokale Datenbank zuzugreifen.
-2. **Entkoppelte Pipeline:** Eingehende Daten werden direkt im Speicher über Pydantic-Modelle validiert und fließen direkt in die bestehende Pandas- und Seaborn-Pipeline ein.
-3. **Zentraler Datenspeicher:** Die `fitness_mock.db` wird langfristig durch eine produktive Datenbanklösung ersetzt, welche sowohl transaktionale Schreibzugriffe der App als auch analytische Lesezugriffe des Tools via API bedienen kann.
+## Ausblick
+
+### Geplante Erweiterungen
+
+1. **REST-API mit FastAPI**
+   - Endpunkte: `POST /trainings`, `GET /statistics/{user_id}`
+   - Pydantic-Validierung eingehender Trainingsdaten
+   - Entkopplung von lokalen `.db`-Dateien
+
+2. **Produktive Datenbank**
+   - Migration von SQLite zu PostgreSQL/MySQL
+   - Trennung: Transaktionale DB (Tracker) ↔ Analytische DB (Analyzer)
+
+3. **Erweiterte Analysen**
+   - Anomalie-Detection via ML (Isolation Forest, LOF)
+   - Forecasting zukünftiger Leistungen (ARIMA, Prophet)
+   - Vergleichsanalysen zwischen mehreren Nutzern
 
 ---
 
 ## Lizenz
 
-Dieses Projekt wurde zu Bildungszwecken im Rahmen eines Portfolios erstellt.
-Frei zur Nutzung und Modifikation.
-```
+Dieses Projekt wurde zu Bildungszwecken als Teil eines technischen Portfolios erstellt.  
+Frei zur Nutzung und Modifikation für nicht-kommerzielle Zwecke.
